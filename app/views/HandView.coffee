@@ -3,7 +3,7 @@ class window.HandView extends Backbone.View
   className: 'hand'
 
   #todo: switch to mustache
-  template: _.template '<h2><% if(isDealer){ %>Dealer<% }else{ %>You<% } %> (<span class="score"></span>)</h2><span class="result"></span>'
+  template: _.template '<h2><% if(isDealer){ %>Dealer<% }else{ %>You<% } %> (<span class="score"></span>)</h2>'
 
   initialize: ->
     @collection.on 'add remove change', => @render()
@@ -16,6 +16,3 @@ class window.HandView extends Backbone.View
     @$el.append @collection.map (card) ->
       new CardView(model: card).$el
     @$('.score').text @collection.scores()[0]
-    @$('.result').text =>
-        if @collection.scores()[0] > 21
-            "You lost"

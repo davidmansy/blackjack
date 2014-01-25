@@ -4,6 +4,7 @@ class window.AppView extends Backbone.View
     <button class="hit-button">Hit</button> <button class="stand-button">Stand</button>
     <div class="player-hand-container"></div>
     <div class="dealer-hand-container"></div>
+    <span class="result"><%= result %></span>
   '
 
   events:
@@ -12,11 +13,15 @@ class window.AppView extends Backbone.View
       @model.get('dealerHand').stand() #Changed from player to dealer
       $('.hit-button').prop "disabled", true
       $('.stand-button').prop "disabled", true
+      @model.checkResult()
 
-  initialize: -> @render()
+  initialize: ->  
+    @render()
+    @model.on "change:result", @render, @
 
   render: ->
     @$el.children().detach()
-    @$el.html @template()
+    @$el.html @template(@model.toJSON())
     @$('.player-hand-container').html new HandView(collection: @model.get 'playerHand').el
     @$('.dealer-hand-container').html new HandView(collection: @model.get 'dealerHand').el
+
