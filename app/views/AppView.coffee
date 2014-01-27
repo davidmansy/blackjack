@@ -12,15 +12,14 @@ class window.AppView extends Backbone.View
       @model.get('playerHand').hit()
       @model.checkResultPlayer()
     "click .stand-button": -> 
-      @model.get('dealerHand').stand() #Changed from player to dealer
-      $('.hit-button').prop "disabled", true
-      $('.stand-button').prop "disabled", true
-      console.log(@model)
+      @model.get('dealerHand').stand()
+      @disableButtons
       @model.checkResultDealer()
 
   initialize: ->  
     @render()
     @model.on "change:result", @render, @
+    @model.on "gameEnd", @disableButtons, @
 
   render: ->
     @$el.children().detach()
@@ -28,3 +27,7 @@ class window.AppView extends Backbone.View
     @$('.player-hand-container').html new HandView(collection: @model.get 'playerHand').el
     @$('.dealer-hand-container').html new HandView(collection: @model.get 'dealerHand').el
 
+  disableButtons: ->
+    console.log "Buttons disabled"
+    $('.hit-button').prop "disabled", true
+    $('.stand-button').prop "disabled", true
